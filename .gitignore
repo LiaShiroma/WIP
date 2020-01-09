@@ -1,7 +1,9 @@
 dir/*
 conf/*
 tmp/*
+bin/classes/__pycache__/*
 
 !dir/.gitkeep 
 !conf/.gitkeep
 !tmp/.gitkeep
+!bin/classes/__pycache__/.gitkeep
