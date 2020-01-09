@@ -77,10 +77,11 @@ class DataTransform():
 
         return wrk_prep_squad 
         
-    def set_wrk_alt_executive(self, tb_wrk_prep_name, prep_name):
+    def set_wrk_alt_executive(self, tb_wrk_alt_name, prep_name):
 
         wrk_alt_executive = []
-        wrk_alt_executive.append("INSERT INTO {}".format(tb_wrk_prep_name))
+        wrk_alt_executive.append("TRUNCATE TABLE {};".format(tb_wrk_alt_name))
+        wrk_alt_executive.append("INSERT INTO {}".format(tb_wrk_alt_name))
         wrk_alt_executive.append("SELECT ")
         wrk_alt_executive.append("	prp.ANOMESDIA,")
         wrk_alt_executive.append("	prp.ID_EXECUTIVE,")
@@ -96,10 +97,11 @@ class DataTransform():
 
         return wrk_alt_executive
 
-    def set_wrk_alt_un(self, tb_wrk_prep_name, prep_name):
+    def set_wrk_alt_un(self, tb_wrk_alt_name, prep_name):
 
         wrk_alt_un = []
-        wrk_alt_un.append("INSERT INTO {}".format(tb_wrk_prep_name))
+        wrk_alt_un.append("TRUNCATE TABLE {};".format(tb_wrk_alt_name))
+        wrk_alt_un.append("INSERT INTO {}".format(tb_wrk_alt_name))
         wrk_alt_un.append("SELECT")
         wrk_alt_un.append("		prp.ANOMESDIA,")
         wrk_alt_un.append("		prp.ID_UN,")
@@ -114,10 +116,11 @@ class DataTransform():
 
         return wrk_alt_un
 
-    def set_wrk_alt_ext(self, tb_wrk_prep_name, prep_name):
+    def set_wrk_alt_ext(self, tb_wrk_alt_name, prep_name):
 
         wrk_alt_ext = []
-        wrk_alt_ext.append("INSERT INTO {}".format(tb_wrk_prep_name))
+        wrk_alt_ext.append("TRUNCATE TABLE {};".format(tb_wrk_alt_name))
+        wrk_alt_ext.append("INSERT INTO {}".format(tb_wrk_alt_name))
         wrk_alt_ext.append("SELECT ")
         wrk_alt_ext.append("		prp.ANOMESDIA,")
         wrk_alt_ext.append("		prp.ID_EXT,")
@@ -133,10 +136,11 @@ class DataTransform():
         
         return wrk_alt_ext
 
-    def set_wrk_alt_squad(self, tb_wrk_prep_name, prep_name):
+    def set_wrk_alt_squad(self, tb_wrk_alt_name, prep_name):
 
         wrk_alt_squad = []
-        wrk_alt_squad.append("INSERT INTO {}".format(tb_wrk_prep_name))
+        wrk_alt_squad.append("TRUNCATE TABLE {};".format(tb_wrk_alt_name))
+        wrk_alt_squad.append("INSERT INTO {}".format(tb_wrk_alt_name))
         wrk_alt_squad.append("SELECT ")
         wrk_alt_squad.append("		prp.ANOMESDIA,")
         wrk_alt_squad.append("		prp.ID_SQUAD,")
