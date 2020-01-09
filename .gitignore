@@ -1,0 +1,7 @@
+dir/*
+conf/*
+tmp/*
+
+!dir/.gitkeep 
+!conf/.gitkeep
+!tmp/.gitkeep
