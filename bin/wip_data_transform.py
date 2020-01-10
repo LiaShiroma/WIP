@@ -1,7 +1,7 @@
-from classes.file_transformer_lib import ExecSQL, ConfParameter
+from classes.file_transformer_lib import ExecSQL, ConfParameter, LogControler
 from classes.data_transform_lib import DataTransform
 from classes.mascara_data import MascaraData
-import os, glob
+import sys, os, glob
 import MySQLdb
 
 def exec_sql_data(dir):
@@ -30,11 +30,19 @@ def data_transform_prep():
     prep_ext = dt.set_wrk_prep_ext("TB_WRK_PREP_EXT", "STG_BASE_WIP_TMP")
     prep_sq = dt.set_wrk_prep_squad("TB_WRK_PREP_SQUAD", "STG_BASE_FATURAMENTOITAU_TMP")
     prep_un = dt.set_wrk_prep_un("TB_WRK_PREP_UN", "STG_BASE_WIP_TMP")
+    prep_user = dt.set_wrk_prep_user("TB_WRK_PREP_USER", "AUX_EMPLOYEE")
+    
+    log_ex = lc.get_data_prep_load("tb_load_prep", "TB_WRK_PREP_EXECUTIVE", sys.argv[0])
+    log_ext = lc.get_data_prep_load("tb_load_prep", "TB_WRK_PREP_EXT", sys.argv[0])
+    log_sq = lc.get_data_prep_load("tb_load_prep", "TB_WRK_PREP_SQUAD", sys.argv[0])
+    log_un = lc.get_data_prep_load("tb_load_prep", "TB_WRK_PREP_UN", sys.argv[0])
+    log_user = lc.get_data_prep_load("tb_load_prep", "TB_WRK_PREP_USER", sys.argv[0])
 
-    dt.transform_prep_to_file(dp_prep, "TB_WRK_PREP_EXECUTIVE", prep_ex)
-    dt.transform_prep_to_file(dp_prep, "TB_WRK_PREP_EXT", prep_ext)
-    dt.transform_prep_to_file(dp_prep, "TB_WRK_PREP_SQUAD", prep_sq)
-    dt.transform_prep_to_file(dp_prep, "TB_WRK_PREP_UN", prep_un)
+    dt.transform_prep_to_file(dp_prep, "TB_WRK_PREP_EXECUTIVE", prep_ex, log_ex)
+    dt.transform_prep_to_file(dp_prep, "TB_WRK_PREP_EXT", prep_ext, log_ext)
+    dt.transform_prep_to_file(dp_prep, "TB_WRK_PREP_SQUAD", prep_sq, log_sq)
+    dt.transform_prep_to_file(dp_prep, "TB_WRK_PREP_UN", prep_un, log_un)
+    dt.transform_prep_to_file(dp_prep, "TB_WRK_PREP_USER", prep_user, log_user)
 
 def data_transform_alt():
 
@@ -42,11 +50,19 @@ def data_transform_alt():
     alt_ext = dt.set_wrk_alt_ext("TB_WRK_ALT_EXT", "TB_WRK_PREP_EXT")
     alt_sq = dt.set_wrk_alt_squad("TB_WRK_ALT_SQUAD", "TB_WRK_PREP_SQUAD")
     alt_un = dt.set_wrk_alt_un("TB_WRK_ALT_UN", "TB_WRK_PREP_UN")
+    alt_user = dt.set_wrk_alt_user("TB_WRK_ALT_USER", "TB_WRK_PREP_USER")
+    
+    log_ex = lc.get_data_prep_load("tb_load_alt", "TB_WRK_ALT_EXECUTIVE", sys.argv[0])
+    log_ext = lc.get_data_prep_load("tb_load_alt", "TB_WRK_ALT_EXT", sys.argv[0])
+    log_sq = lc.get_data_prep_load("tb_load_alt", "TB_WRK_ALT_SQUAD", sys.argv[0])
+    log_un = lc.get_data_prep_load("tb_load_alt", "TB_WRK_ALT_UN", sys.argv[0])
+    log_user = lc.get_data_prep_load("tb_load_alt", "TB_WRK_ALT_USER", sys.argv[0])
 
-    dt.transform_prep_to_file(dp_alt, "TB_WRK_ALT_EXECUTIVE", alt_ex)
-    dt.transform_prep_to_file(dp_alt, "TB_WRK_ALT_EXT", alt_ext)
-    dt.transform_prep_to_file(dp_alt, "TB_WRK_ALT_SQUAD", alt_sq)
-    dt.transform_prep_to_file(dp_alt, "TB_WRK_ALT_UN", alt_un)
+    dt.transform_prep_to_file(dp_alt, "TB_WRK_ALT_EXECUTIVE", alt_ex, log_ex)
+    dt.transform_prep_to_file(dp_alt, "TB_WRK_ALT_EXT", alt_ext, log_ext)
+    dt.transform_prep_to_file(dp_alt, "TB_WRK_ALT_SQUAD", alt_sq, log_sq)
+    dt.transform_prep_to_file(dp_alt, "TB_WRK_ALT_UN", alt_un, log_un)
+    dt.transform_prep_to_file(dp_alt, "TB_WRK_ALT_USER", alt_user, log_user)
 
 def data_transform_dim():
 
@@ -54,17 +70,26 @@ def data_transform_dim():
     dim_ext = dt.set_dim_ext("DIM_EXT", "TB_WRK_ALT_EXT")
     dim_sq = dt.set_dim_squad("DIM_SQUAD", "TB_WRK_ALT_SQUAD")
     dim_un = dt.set_dim_un("DIM_UN", "TB_WRK_ALT_UN")
+    dim_user = dt.set_dim_user("DIM_USER", "TB_WRK_ALT_USER")
+    
+    log_ex = lc.get_data_prep_load("tb_load_dim", "DIM_EXECUTIVE", sys.argv[0])
+    log_ext = lc.get_data_prep_load("tb_load_dim", "DIM_EXT", sys.argv[0])
+    log_sq = lc.get_data_prep_load("tb_load_dim", "DIM_SQUAD", sys.argv[0])
+    log_un = lc.get_data_prep_load("tb_load_dim", "DIM_UN", sys.argv[0])
+    log_user = lc.get_data_prep_load("tb_load_dim", "DIM_USER", sys.argv[0])
 
-    dt.transform_prep_to_file(dp_dim, "DIM_EXECUTIVE", dim_ex)
-    dt.transform_prep_to_file(dp_dim, "DIM_EXT", dim_ext)
-    dt.transform_prep_to_file(dp_dim, "DIM_SQUAD", dim_sq)
-    dt.transform_prep_to_file(dp_dim, "DIM_UN", dim_un)
+    dt.transform_prep_to_file(dp_dim, "DIM_EXECUTIVE", dim_ex, log_ex)
+    dt.transform_prep_to_file(dp_dim, "DIM_EXT", dim_ext, log_ext)
+    dt.transform_prep_to_file(dp_dim, "DIM_SQUAD", dim_sq, log_sq)
+    dt.transform_prep_to_file(dp_dim, "DIM_UN", dim_un, log_un)
+    dt.transform_prep_to_file(dp_dim, "DIM_USER", dim_user, log_user)
         
 if __name__ == '__main__':
 
     t = MascaraData()
     today = t.get_today()
  
+    lc = LogControler()
     dt = DataTransform()
     ps = ExecSQL()
     pc = ConfParameter()

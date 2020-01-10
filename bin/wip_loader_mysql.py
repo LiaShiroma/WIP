@@ -33,7 +33,7 @@ if __name__ == '__main__':
     path_conf = pc.get_py_configger('Path')
     path_mysql_conn = pc.get_py_configger('MySql Connector') 
 
-    dest_sql = path_conf['temp'] + today + '\\sql\\'
+    dest_sql = path_conf['temp'] + today + '\\sql\\stage'
     os.chdir(dest_sql)
     
     main()

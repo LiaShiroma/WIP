@@ -46,9 +46,10 @@ CREATE TABLE TB_WRK_ALT_SQUAD
 DROP TABLE IF EXISTS TB_WRK_ALT_USER;
 CREATE TABLE TB_WRK_ALT_USER
 (
+	anomesdia varchar(8),
 	itau_employee_name varchar(300),
-	id_sap varchar(6),
-	id_func varchar(6),
+	id_sap varchar(10),
+	id_func varchar(10),
 	everis_employee_name varchar(300),
 	dt_init date,
 	dt_end date,

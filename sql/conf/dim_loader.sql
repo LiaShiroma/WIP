@@ -45,7 +45,7 @@ CREATE TABLE DIM_USER
 	anomesdia varchar(8),
 	itau_employee_name varchar(300),
 	id_sap varchar(6),
-	id_func varchar(6),
+	id_func varchar(8),
 	everis_employee_name varchar(300),
 	dt_init date,
 	dt_end date

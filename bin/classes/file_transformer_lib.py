@@ -87,7 +87,7 @@ class CsvToSQL():
 
     def write_lines_to_file(self, csv_file, tbl_nm, tbl_lines, data_lines, log_lines): 
         
-        source_sql = 'C:\\PROD\\tmp\\' + self.today + '\\sql'
+        source_sql = 'C:\\PROD\\tmp\\' + self.today + '\\sql\\stage'
         
         if not self.os.path.exists(source_sql):
             self.os.mkdir(source_sql)
@@ -224,6 +224,7 @@ class LogControler():
     def get_stage_load(self, stg_name, csv_file):
     
         lines_stage_load = []
+        lines_stage_load.append('')
         lines_stage_load.append('INSERT INTO tb_load_stage')
         lines_stage_load.append('(')
         lines_stage_load.append('anomesdia, stg_name, dt_load, nm_file')
@@ -232,8 +233,27 @@ class LogControler():
         lines_stage_load.append('(')
         lines_stage_load.append("'{}',".format(self.today))
         lines_stage_load.append("'{}',".format(stg_name))
-        lines_stage_load.append("current_timestamp(),".format(stg_name))
+        lines_stage_load.append("current_timestamp(),")
         lines_stage_load.append("'{}'".format(csv_file))
         lines_stage_load.append(");")
        
-        return lines_stage_load              
+        return lines_stage_load           
+
+    def get_data_prep_load(self, table_insert_name, dp_table_name ,process_name):
+    
+        lines_stage_load = []
+        lines_stage_load.append('')
+        lines_stage_load.append('INSERT INTO {}'.format(table_insert_name))
+        lines_stage_load.append('(')
+        lines_stage_load.append('anomesdia, dp_table_name, dt_load, process_name')
+        lines_stage_load.append(')')
+        lines_stage_load.append('VALUES')
+        lines_stage_load.append('(')
+        lines_stage_load.append("'{}',".format(self.today))
+        lines_stage_load.append("'{}',".format(dp_table_name))
+        lines_stage_load.append("current_timestamp(),")
+        lines_stage_load.append("'{}'".format(process_name))
+        lines_stage_load.append(");")
+       
+        return lines_stage_load        
+

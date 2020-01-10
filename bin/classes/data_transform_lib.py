@@ -77,6 +77,24 @@ class DataTransform():
 
         return wrk_prep_squad 
         
+    def set_wrk_prep_user(self, tb_wrk_prep_name, stg_name):
+
+        wrk_prep_user = []
+        wrk_prep_user.append("DROP TABLE IF EXISTS {};".format(tb_wrk_prep_name))
+        wrk_prep_user.append("CREATE TABLE {} AS".format(tb_wrk_prep_name))
+        wrk_prep_user.append("SELECT")
+        wrk_prep_user.append("	{} AS ANOMESDIA,".format(self.today))
+        wrk_prep_user.append("	itau_employee_name,	")
+        wrk_prep_user.append("	SUBSTR(id_sap, 1,6) as id_sap,")				
+        wrk_prep_user.append("	SUBSTR(id_func, 1,8) as id_func,")			
+        wrk_prep_user.append("	everis_employee_name,")
+        wrk_prep_user.append("	dt_init,")
+        wrk_prep_user.append("	IF(ISNULL(dt_end),STR_TO_DATE('31/12/2100', '%d/%m/%Y'), dt_end) AS DT_END")
+        wrk_prep_user.append("FROM {};".format(stg_name))
+        
+        return wrk_prep_user
+    
+        
     def set_wrk_alt_executive(self, tb_wrk_alt_name, prep_name):
 
         wrk_alt_executive = []
@@ -156,6 +174,28 @@ class DataTransform():
         
         return wrk_alt_squad
         
+    def set_wrk_alt_user(self, tb_wrk_alt_name, prep_name):
+
+        wrk_alt_user = []
+        wrk_alt_user.append("TRUNCATE TABLE {};".format(tb_wrk_alt_name))
+        wrk_alt_user.append("INSERT INTO {}".format(tb_wrk_alt_name))
+        wrk_alt_user.append("SELECT ")
+        wrk_alt_user.append("	prp.ANOMESDIA,")
+        wrk_alt_user.append("	prp.ITAU_EMPLOYEE_NAME,")
+        wrk_alt_user.append("	prp.ID_SAP,")
+        wrk_alt_user.append("	prp.ID_FUNC,")
+        wrk_alt_user.append("	prp.EVERIS_EMPLOYEE_NAME,")
+        wrk_alt_user.append("	STR_TO_DATE(prp.DT_INIT, '%Y-%m-%d') as DT_INIT,")
+        wrk_alt_user.append("	STR_TO_DATE('2100-12-31', '%Y-%m-%d') DT_END,")
+        wrk_alt_user.append("	IF(ISNULL(dim.ID_SAP),'I',")
+        wrk_alt_user.append("		IF((prp.ITAU_EMPLOYEE_NAME <> dim.ITAU_EMPLOYEE_NAME OR  prp.EVERIS_EMPLOYEE_NAME <> dim.EVERIS_EMPLOYEE_NAME),'A', ")
+        wrk_alt_user.append("			IF((prp.DT_END <> dim.DT_END),'E','N'))) AS  COD_INDCD_ALT")
+        wrk_alt_user.append("FROM {} AS prp".format(prep_name))
+        wrk_alt_user.append("LEFT JOIN DIM_USER dim")
+        wrk_alt_user.append("ON prp.ID_SAP = dim.ID_SAP;")
+        
+        return wrk_alt_user
+        
     def set_dim_executive(self, tb_dim_name, alt_name):
 
         prep_dim_executive = []
@@ -222,13 +262,14 @@ class DataTransform():
         prep_dim_user.append("ID_SAP ,")
         prep_dim_user.append("ID_FUNC ,")
         prep_dim_user.append("EVERIS_EMPLOYEE_NAME,")
-        prep_dim_user.append("DT_INIT")
+        prep_dim_user.append("DT_INIT,")
+        prep_dim_user.append("DT_END")
         prep_dim_user.append("FROM {}".format(alt_name))
         prep_dim_user.append("WHERE COD_INDCD_ALT IN('I','A');")
 
         return prep_dim_user
 
-    def transform_prep_to_file(self, source_sql, tbl_nm, tbl_wrk_prep): 
+    def transform_prep_to_file(self, source_sql, tbl_nm, tbl_wrk_prep, log_lines): 
     
         sq = source_sql
         
@@ -239,4 +280,6 @@ class DataTransform():
         
         with open (tbl_nm.lower() + '.sql', 'w') as f:
             for i in tbl_wrk_prep:
+                f.write(i + '\n')
+            for i in log_lines:
                 f.write(i + '\n')
