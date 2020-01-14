@@ -87,12 +87,16 @@ class CsvToSQL():
 
     def write_lines_to_file(self, csv_file, tbl_nm, tbl_lines, data_lines, log_lines): 
         
-        source_sql = 'C:\\PROD\\tmp\\' + self.today + '\\sql\\stage'
+        source_sql = 'C:\\PROD\\tmp\\' + self.today + '\\sql'
+        source_stage = 'C:\\PROD\\tmp\\' + self.today + '\\sql\\stage'
         
         if not self.os.path.exists(source_sql):
             self.os.mkdir(source_sql)
         
-        self.os.chdir(source_sql)
+        if not self.os.path.exists(source_stage):
+            self.os.mkdir(source_stage)
+            
+        self.os.chdir(source_stage)
         
         with open (tbl_nm + '.sql', 'w') as f:
             for i in tbl_lines:

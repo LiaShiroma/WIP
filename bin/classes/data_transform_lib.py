@@ -85,7 +85,7 @@ class DataTransform():
         wrk_prep_user.append("SELECT")
         wrk_prep_user.append("	{} AS ANOMESDIA,".format(self.today))
         wrk_prep_user.append("	itau_employee_name,	")
-        wrk_prep_user.append("	SUBSTR(id_sap, 1,6) as id_sap,")				
+        wrk_prep_user.append("	SUBSTRING_INDEX(id_sap, '.', '1') as id_sap,")				
         wrk_prep_user.append("	SUBSTR(id_func, 1,8) as id_func,")			
         wrk_prep_user.append("	everis_employee_name,")
         wrk_prep_user.append("	dt_init,")
@@ -111,7 +111,7 @@ class DataTransform():
         wrk_alt_executive.append("	IF((prp.DT_END <> dim.DT_END),'E', 'N')) AS COD_INDCD_ALT")
         wrk_alt_executive.append("FROM {} prp".format(prep_name))
         wrk_alt_executive.append("LEFT JOIN DIM_EXECUTIVE dim")
-        wrk_alt_executive.append("ON prp.ID_EXECUTIVE = dim.ID_EXECUTIVE;")
+        wrk_alt_executive.append("ON prp.NM_EXECUTIVE = dim.NM_EXECUTIVE;")
 
         return wrk_alt_executive
 
@@ -130,7 +130,7 @@ class DataTransform():
         wrk_alt_un.append("IF((prp.DT_END <> dim.DT_END),'E', 'N')) AS COD_INDCD_ALT")
         wrk_alt_un.append("FROM {} prp".format(prep_name))
         wrk_alt_un.append("LEFT JOIN DIM_UN dim")
-        wrk_alt_un.append("ON prp.ID_UN = dim.ID_UN;")
+        wrk_alt_un.append("ON prp.NM_UN = dim.NM_UN;")
 
         return wrk_alt_un
 
