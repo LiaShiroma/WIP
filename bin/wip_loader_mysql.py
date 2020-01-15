@@ -20,7 +20,7 @@ def main():
                 cursor.execute(stmt)
             mydb.commit()
             
-        os.remove(g)
+        # os.remove(g)
 
 if __name__ == '__main__':
 
